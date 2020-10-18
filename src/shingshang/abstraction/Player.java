@@ -10,9 +10,10 @@ public class Player {
 	
 	// INSTANCE VARIABLES (ATTRIBUTES)
 	String pseudonym;
-	
-	
-	
-	
+
+	// METHODS
+	public Player(String pseudonym) {
+		this.pseudonym = pseudonym;
+	}
 	
 }

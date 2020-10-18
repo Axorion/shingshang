@@ -14,6 +14,16 @@ public class Bushi {
 	int movementPoint;
 	Cell position;
 	
+	// METHODS
 	
+	public Bushi(BushiType bushiType, Player owner, int movementPoint, Cell position) {
+		this.bushiType = bushiType;
+		this.owner = owner;
+		this.movementPoint = movementPoint;
+		this.position = position;
+	}
 	
+	public BushiType getBushiType(){
+		return this.bushiType;
+	}
 }
