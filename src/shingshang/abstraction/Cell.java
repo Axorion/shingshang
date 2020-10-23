@@ -4,7 +4,6 @@ package shingshang.abstraction;
  * @author Tanguy Mossion
  */
 
-
 public class Cell {
 	
 	// CONSTANTS
@@ -28,7 +27,6 @@ public class Cell {
 		this.isValid = isValid;
 	}
 	
-
 	/**
 	 * Returns the Bushi object on the cell
 	 * @return	the bushi on the cell
