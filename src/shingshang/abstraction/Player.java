@@ -9,9 +9,14 @@ public class Player {
 	// CONSTANTS
 	
 	// INSTANCE VARIABLES (ATTRIBUTES)
-	String pseudonym;
+	final private String pseudonym;
 
 	// METHODS
+
+	/**
+	 * Constructor initializing a Player
+	 * @param  pseudonym	the player's pseudonym
+	 */
 	public Player(String pseudonym) {
 		this.pseudonym = pseudonym;
 	}
