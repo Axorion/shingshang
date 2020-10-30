@@ -46,7 +46,7 @@ public class Cell {
 	{
 		this.bushi = bushi;
 	}
-	
+ 
 	/**
 	 * Remove the Bushi object from the cell
 	 * @see	Bushi

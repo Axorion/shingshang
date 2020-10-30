@@ -56,6 +56,14 @@ public class Bushi {
 	public BushiType getBushiType() {
 		return this.bushiType;
 	}
+	
+	/**
+	 * Returns 	the movement points of the Bushi
+	 * @return	the bushi's movement points
+	 */
+	public int getMovementPoint() {
+		return this.movementPoint;
+	}
 
 	/**
 	 * Returns 	the BushiType of the Bushi

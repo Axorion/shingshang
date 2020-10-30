@@ -1,4 +1,8 @@
 package shingshang.abstraction;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+import java.lang.Math;
 
 /** Represents the board.
  * @author Tanguy Mossion
@@ -9,7 +13,8 @@ public class Board {
 	// CONSTANTS
 	private final static int NB_LIN = 10;
 	private final static int NB_COL = 10;
-	
+	private final static int X = 0;
+	private final static int Y = 1;
 	
 	// INSTANCE VARIABLES (ATTRIBUTES)
 
@@ -19,6 +24,7 @@ public class Board {
 	static public Cell board[][];
 	private Player player1;
 	private Player player2;
+	public Cell cellSelected;
 	
 	// METHODS
 	
@@ -107,10 +113,23 @@ public class Board {
 	 * @param  col	the column of the cell
 	 * @param  lin	the line of the cell
 	 * @return		the cell at the position [col][lin]
-	 * @see     		Cell
+	 * @see    Cell
 	 */
 	public Cell getCell(int col, int lin) {
 		return board[col][lin];
+	}
+	
+	public int[] getCoordinatesOfCell(Cell cell) {
+		int[] coordinates = new int[2];
+		for (int col = 0 ; col < NB_LIN ; col++ ) {
+			for (int lin = 0 ; lin < NB_COL ; lin++) {
+				if(getCell(col,lin) == cell) {
+					coordinates[X] = col;
+					coordinates[Y] = lin;
+				}
+			}
+		}
+		return coordinates;
 	}
 	
 	/**
@@ -159,5 +178,115 @@ public class Board {
 		{
 			System.out.print("?");
 		}
+	}
+	
+	/**
+	 * Return a list of cells where the bushi selected can move
+	 * @return	the cells where the bushi selected can move
+	 */
+	public List<Cell> getCellsWhereBushiSelectedCanMove()
+	{
+		List<Cell> cellsWhereBushiSelectedCanMove = new ArrayList<Cell>();
+		cellsWhereBushiSelectedCanMove.addAll(getCellsWhichBushiSelectedCanReach());
+		this.removeCellsInvalidInList(cellsWhereBushiSelectedCanMove);
+		this.removeCellsOccupiedInList(cellsWhereBushiSelectedCanMove);
+		this.removeCellsPortalInList(cellsWhereBushiSelectedCanMove);
+		return cellsWhereBushiSelectedCanMove;
+	}
+	
+	/**
+	 * Return a list of cells which the bushi selected can reach
+	 * @return	the cells which the bushi selected can reach
+	 */
+	public List<Cell> getCellsWhichBushiSelectedCanReach()
+	{
+		List<Cell> cellsWhichBushiSelectedCanReach = new ArrayList<Cell>();
+		int[] coordinatesOfCellSelected = getCoordinatesOfCell(this.cellSelected);
+		Bushi bushiSelected = this.cellSelected.getBushi();
+		int movementPoint = bushiSelected.getMovementPoint();
+		for(int i = coordinatesOfCellSelected[X] - movementPoint ; 
+				i <= coordinatesOfCellSelected[X] + movementPoint ; i++)
+		{
+
+			for(int j = coordinatesOfCellSelected[Y] - movementPoint ; 
+					j <= coordinatesOfCellSelected[Y] + movementPoint ; j++)
+			{
+				if(i >= 0  && i < NB_LIN && j >= 0 && j < NB_LIN) {
+					// Exclude the cellSelected and invalid cells
+					if(!(coordinatesOfCellSelected[X] == i
+							&& coordinatesOfCellSelected[Y] == j)) 
+					{
+						// Add cells which the Bushi can reach horizontally and vertically
+						if(coordinatesOfCellSelected[X] == i
+								|| coordinatesOfCellSelected[Y] == j)
+						{
+							cellsWhichBushiSelectedCanReach.add(getCell(i,j));
+						}
+						// Add cells which the Bushi can reach diagonally
+						else if((Math.abs(coordinatesOfCellSelected[X] - i) == 1
+								&& (Math.abs(coordinatesOfCellSelected[Y] - j) == 1 || (Math.abs(coordinatesOfCellSelected[Y] + j) == 1))
+								|| (Math.abs(coordinatesOfCellSelected[X] + i) == 1
+										&& (Math.abs(coordinatesOfCellSelected[Y] - j) == 1 || (Math.abs(coordinatesOfCellSelected[Y] + j) == 1)))))
+						{
+							cellsWhichBushiSelectedCanReach.add(getCell(i,j));
+						}
+						else if ((Math.abs(coordinatesOfCellSelected[X] - Math.abs(i)) == 2)
+								&& (Math.abs(coordinatesOfCellSelected[Y] - Math.abs(j)) == 2)) 
+						{
+							cellsWhichBushiSelectedCanReach.add(getCell(i,j));
+						}
+					}
+				}
+			}
+		}
+		return cellsWhichBushiSelectedCanReach;
+	}
+	
+	/**
+	 * Remove the cells occupied from a list of cells
+	 * @param 	a list of cell
+	 * @return	a list of cell where none is occupied
+	 */
+	public List<Cell> removeCellsOccupiedInList(List<Cell> cells)
+	{
+		ListIterator<Cell> itCell = cells.listIterator();
+		while(itCell.hasNext())
+		{
+			if(!itCell.next().isEmpty())
+				itCell.remove();
+		}
+		return cells;
+	}
+	
+	/**
+	 * Remove the cells which are portals from a list of cells
+	 * @param 	a list of cell
+	 * @return	a list of cell where none is a portal
+	 */
+	public List<Cell> removeCellsPortalInList(List<Cell> cells)
+	{
+		ListIterator<Cell> itCell = cells.listIterator();
+		while(itCell.hasNext())
+		{
+			if(itCell.next().isPortal())
+				itCell.remove();
+		}
+		return cells;
+	}
+	
+	/**
+	 * Remove the invalid cells from a list of cells
+	 * @param 	a list of cell
+	 * @return	a list of cell where none is invalid
+	 */
+	public List<Cell> removeCellsInvalidInList(List<Cell> cells)
+	{
+		ListIterator<Cell> itCell = cells.listIterator();
+		while(itCell.hasNext())
+		{
+			if(!itCell.next().isValid())
+				itCell.remove();
+		}
+		return cells;
 	}
 }
