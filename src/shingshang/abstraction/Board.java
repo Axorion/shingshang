@@ -24,6 +24,10 @@ public class Board {
 	static public Cell board[][];
 	private Player player1;
 	private Player player2;
+	
+	/**
+	 * The cell selected by the player
+	 */
 	public Cell cellSelected;
 	
 	// METHODS
@@ -119,6 +123,12 @@ public class Board {
 		return board[col][lin];
 	}
 	
+	/**
+	 * Returns the coordinates in the board of a Cell object
+	 * @param  	cell	the cell you want to get the coordinates
+	 * @return	int[]	the coordinates of the cell
+	 * @see    	Cell
+	 */
 	public int[] getCoordinatesOfCell(Cell cell) {
 		int[] coordinates = new int[2];
 		for (int col = 0 ; col < NB_LIN ; col++ ) {
@@ -148,6 +158,7 @@ public class Board {
 	/**
 	 * Display a cell in the console. There are different representations depending on the cell state.
 	 * @param  cell	the cell to display on console
+	 * @see    Cell
 	 */
 	public void displayCell(Cell cell) {
 		if(cell.isPortal())
@@ -183,11 +194,13 @@ public class Board {
 	/**
 	 * Return a list of cells where the bushi selected can move
 	 * @return	the cells where the bushi selected can move
+	 * @see    	Cell
 	 */
 	public List<Cell> getCellsWhereBushiSelectedCanMove()
 	{
 		List<Cell> cellsWhereBushiSelectedCanMove = new ArrayList<Cell>();
 		cellsWhereBushiSelectedCanMove.addAll(getCellsWhichBushiSelectedCanReach());
+		cellsWhereBushiSelectedCanMove.addAll(getCellsWhereBushiSelectedCanJump());
 		this.removeCellsInvalidInList(cellsWhereBushiSelectedCanMove);
 		this.removeCellsOccupiedInList(cellsWhereBushiSelectedCanMove);
 		this.removeCellsPortalInList(cellsWhereBushiSelectedCanMove);
@@ -197,6 +210,7 @@ public class Board {
 	/**
 	 * Return a list of cells which the bushi selected can reach
 	 * @return	the cells which the bushi selected can reach
+	 * @see		Cell
 	 */
 	public List<Cell> getCellsWhichBushiSelectedCanReach()
 	{
@@ -211,8 +225,9 @@ public class Board {
 			for(int j = coordinatesOfCellSelected[Y] - movementPoint ; 
 					j <= coordinatesOfCellSelected[Y] + movementPoint ; j++)
 			{
-				if(i >= 0  && i < NB_LIN && j >= 0 && j < NB_LIN) {
-					// Exclude the cellSelected and invalid cells
+				if(i >= 0  && i < NB_LIN && j >= 0 && j < NB_LIN) 
+				{
+					// Exclude the cellSelected
 					if(!(coordinatesOfCellSelected[X] == i
 							&& coordinatesOfCellSelected[Y] == j)) 
 					{
@@ -243,9 +258,142 @@ public class Board {
 	}
 	
 	/**
+	 * Return a list of cells where the bushi selected can jump
+	 * @return	the cells where the bushi selected can jump
+	 * @see   	Cell
+	 */
+	public List<Cell> getCellsWhereBushiSelectedCanJump()
+	{
+		List<Cell> cellsWhereBushiSelectedCanJump = new ArrayList<Cell>();
+		
+		List<Cell> cellsCloseToBushiSelected = new ArrayList<Cell>();
+		cellsCloseToBushiSelected.addAll(this.getCellsCloseToBushiSelected());
+		
+		ListIterator<Cell> itCell = cellsCloseToBushiSelected.listIterator();
+		
+		while(itCell.hasNext())
+		{
+			Cell currentCell = itCell.next();
+			if(currentCell.getBushi() != null)
+			{
+				if(!this.checkIfBushiSelectedCanJumpOver(currentCell.getBushi()))
+				{
+					itCell.remove();
+				}
+				else
+				{
+					int[] coordinatesOfBushiSelectedAfterJumpingOverOtherBushi = getCoordinatesOfBushiSelectedAfterJumpingOver(currentCell.getBushi());
+					Cell cellWhereBushiSelectedJump = this.getCell(coordinatesOfBushiSelectedAfterJumpingOverOtherBushi[X], 
+							coordinatesOfBushiSelectedAfterJumpingOverOtherBushi[Y]);
+					cellsWhereBushiSelectedCanJump.add(cellWhereBushiSelectedJump);
+				}
+			}
+			else
+			{
+				itCell.remove();
+			}
+		}
+		
+		return cellsWhereBushiSelectedCanJump;
+	}
+	
+	/**
+	 * Return a list of cells close to the bushi selected
+	 * @return	the cells close to the bushi selected
+	 * @see   	Cell
+	 */
+	public List<Cell> getCellsCloseToBushiSelected()
+	{
+		List<Cell> cellsCloseToBushiSelected = new ArrayList<Cell>();
+		int[] coordinatesOfCellSelected = getCoordinatesOfCell(this.cellSelected);
+		 
+		for(int i = coordinatesOfCellSelected[X] - 1 ; i <= coordinatesOfCellSelected[X] + 1 ; i++)
+		{
+			for(int j = coordinatesOfCellSelected[Y] - 1 ; j <= coordinatesOfCellSelected[Y] + 1 ; j++)
+			{
+				if(i >= 0  && i < NB_LIN && j >= 0 && j < NB_LIN) 
+				{
+					// Exclude the cellSelected
+					if(!(coordinatesOfCellSelected[X] == i
+							&& coordinatesOfCellSelected[Y] == j)) 
+					{
+						cellsCloseToBushiSelected.add(getCell(i,j));
+					}
+				}
+			}
+			
+		}
+		
+		return cellsCloseToBushiSelected;
+	}
+	
+	/**
+	 * Return a boolean indicating if the bushi selected can jump over the other bushi
+	 * @param	otherBushi	the other bushi over which the bushi selected jumps
+	 * @return	a boolean 	indicating if the bushi selected can jump over the other bushi
+	 * @see    	Bushi
+	 */
+	public boolean checkIfBushiSelectedCanJumpOver(Bushi otherBushi)
+	{
+		boolean bushiSelectedCanMoveOverOtherBushi = false;
+		boolean bushiIsBiggerOrEqualThanBushi = false;
+		boolean bushiSelectedWillLandOnTheBoard = false;
+		
+		if(this.cellSelected.getBushi() != null)
+		{
+			Bushi bushiSelected = this.cellSelected.getBushi();
+			bushiIsBiggerOrEqualThanBushi = bushiSelected.isBiggerOrEqualThan(otherBushi);
+			
+			int[] coordinatesOfBushiSelectedAfterJumpingOverOtherBushi = getCoordinatesOfBushiSelectedAfterJumpingOver(otherBushi);
+			
+			bushiSelectedWillLandOnTheBoard = coordinatesOfBushiSelectedAfterJumpingOverOtherBushi[X] >= 0  
+					&& coordinatesOfBushiSelectedAfterJumpingOverOtherBushi[X] < NB_LIN 
+					&& coordinatesOfBushiSelectedAfterJumpingOverOtherBushi[Y] >= 0 
+					&& coordinatesOfBushiSelectedAfterJumpingOverOtherBushi[Y] < NB_LIN;
+		}
+		
+		bushiSelectedCanMoveOverOtherBushi = bushiIsBiggerOrEqualThanBushi && bushiSelectedWillLandOnTheBoard;
+		return bushiSelectedCanMoveOverOtherBushi;
+	}
+	
+	/**
+	 * Returns the coordinates in the board of the bushi selected after jumping overt the other bushi
+	 * @param	otherBushi	the other bushi over which the bushi selected jumps
+	 * @return	int[]		the coordinates of the cell
+	 * @see    	Bushi
+	 */
+	public int[] getCoordinatesOfBushiSelectedAfterJumpingOver(Bushi otherBushi)
+	{
+		Bushi bushiSelected = this.cellSelected.getBushi();
+		
+		int[] coordinatesOfBushiSelected = this.getCoordinatesOfCell(bushiSelected.getPosition());
+		int[] coordinatesOfOtherBushi = this.getCoordinatesOfCell(otherBushi.getPosition());
+		
+		if(coordinatesOfBushiSelected[X] < coordinatesOfOtherBushi[X])
+		{
+			coordinatesOfBushiSelected[X] = coordinatesOfOtherBushi[X] + 1;
+		}
+		else if(coordinatesOfBushiSelected[X] > coordinatesOfOtherBushi[X])
+		{
+			coordinatesOfBushiSelected[X] = coordinatesOfOtherBushi[X] - 1;
+		}
+		if(coordinatesOfBushiSelected[Y] < coordinatesOfOtherBushi[Y])
+		{
+			coordinatesOfBushiSelected[Y] = coordinatesOfOtherBushi[Y] + 1;
+		}
+		else if(coordinatesOfBushiSelected[Y] > coordinatesOfOtherBushi[Y])
+		{
+			coordinatesOfBushiSelected[Y] = coordinatesOfOtherBushi[Y] - 1;
+		}
+		
+		return coordinatesOfBushiSelected;
+	}
+	
+	/**
 	 * Remove the cells occupied from a list of cells
-	 * @param 	a list of cell
+	 * @param 	cells	a list of cell
 	 * @return	a list of cell where none is occupied
+	 * @see    	Cell
 	 */
 	public List<Cell> removeCellsOccupiedInList(List<Cell> cells)
 	{
@@ -260,8 +408,9 @@ public class Board {
 	
 	/**
 	 * Remove the cells which are portals from a list of cells
-	 * @param 	a list of cell
+	 * @param 	cells	a list of cell
 	 * @return	a list of cell where none is a portal
+	 * @see    	Cell
 	 */
 	public List<Cell> removeCellsPortalInList(List<Cell> cells)
 	{
@@ -276,8 +425,9 @@ public class Board {
 	
 	/**
 	 * Remove the invalid cells from a list of cells
-	 * @param 	a list of cell
+	 * @param 	cells	a list of cell
 	 * @return	a list of cell where none is invalid
+	 * @see    	Cell
 	 */
 	public List<Cell> removeCellsInvalidInList(List<Cell> cells)
 	{

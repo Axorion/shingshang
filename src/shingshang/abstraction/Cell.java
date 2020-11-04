@@ -80,6 +80,6 @@ public class Cell {
 	 */
 	public boolean isEmpty()
 	{
-		return (bushi == null);
+		return (this.bushi == null);
 	}
 }

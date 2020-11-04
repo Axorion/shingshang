@@ -93,4 +93,14 @@ public class Bushi {
 		this.setPosition(position);
 		position.setBushi(this);
 	}
+	
+	/**
+	 * Returns a boolean indicating if the bushi is bigger or equal than the other bushi
+	 * @param 	otherBushi	the other bushi to compare with the bushi
+	 * @return 	a boolean 	indicating if the bushi is bigger or equal than the other bushi
+	 */
+	public boolean isBiggerOrEqualThan(Bushi otherBushi)
+	{
+		return(this.bushiType.ordinal() >= otherBushi.bushiType.ordinal());
+	}
 }
