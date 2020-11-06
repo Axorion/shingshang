@@ -21,4 +21,13 @@ public class Player {
 		this.pseudonym = pseudonym;
 	}
 	
+	/**
+	 * Returns the pseudonym of the Player
+	 * @return	the Player's pseudonym
+	 * @see		Bushi
+	 */
+	public String getPseudonym()
+	{
+		return this.pseudonym;
+	}
 }

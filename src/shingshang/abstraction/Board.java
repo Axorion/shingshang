@@ -77,8 +77,8 @@ public class Board {
 		
 		/// Dragons
 		// P1
-		Bushi bushiP1Dragon1 = new Bushi(BushiType.DRAGON, player1, board[1][0]);
-		Bushi bushiP1Dragon2 = new Bushi(BushiType.DRAGON, player1, board[8][0]);
+		//Bushi bushiP1Dragon1 = new Bushi(BushiType.DRAGON, player1, board[1][0]);
+		//Bushi bushiP1Dragon2 = new Bushi(BushiType.DRAGON, player1, board[8][0]);
 		// P2
 		Bushi bushiP2Dragon1 = new Bushi(BushiType.DRAGON, player2, board[1][9]);
 		Bushi bushiP2Dragon2 = new Bushi(BushiType.DRAGON, player2, board[8][9]);
@@ -438,5 +438,90 @@ public class Board {
 				itCell.remove();
 		}
 		return cells;
+	}
+	
+	/**
+	 * If there is one of the win condition, returns the player who wins
+	 * @return	the winner with a Player object
+	 * @see    	Player
+	 */
+	public Player checkVictory()
+	{
+		Player winner;
+		
+		winner = checkIfOneDragonIsOnPortal();
+		if(winner == null)
+			winner = checkIfOnePlayerHasNoDragon();
+				
+		return winner;
+	}
+	
+	/**
+	 * If one dragon is on a portal, returns his owner who wins
+	 * @return	the winner with a Player object
+	 * @see    	Player
+	 */
+	public Player checkIfOneDragonIsOnPortal()
+	{
+		Player winner = null;
+		for (int col = 0 ; col < NB_LIN ; col++ ) {
+			for (int lin = 0 ; lin < NB_COL ; lin++) {
+				Cell currentCell = getCell(col, lin);
+				if(currentCell.isPortal())
+				{
+					if(currentCell.getBushi() != null)
+					{
+						Bushi currentBushi = currentCell.getBushi();
+						if(currentBushi.getBushiType() == BushiType.DRAGON)
+						{
+							winner = currentBushi.getOwner();
+						}
+					}
+				}
+			}
+		}		
+		return winner;
+	}
+	
+	/**
+	 * If a player has no dragon, returns his opponent who wins
+	 * @return	the winner with a Player object
+	 * @see    	Player
+	 */
+	public Player checkIfOnePlayerHasNoDragon()
+	{
+		Player winner = null;
+		
+		int nbDragonPlayer1 = 0;
+		int nbDragonPlayer2 = 0;
+		
+		for (int col = 0 ; col < NB_LIN ; col++ ) {
+			for (int lin = 0 ; lin < NB_COL ; lin++) {
+				Cell currentCell = getCell(col, lin);
+				if(currentCell.getBushi() != null)
+				{
+					Bushi currentBushi = currentCell.getBushi();
+					if(currentBushi.getBushiType() == BushiType.DRAGON)
+					{
+						if(currentBushi.getOwner() == player1)
+						{
+							nbDragonPlayer1++;
+						}
+						else if(currentBushi.getOwner() == player2)
+						{
+							nbDragonPlayer2++;
+						}
+					}
+				}
+			}
+		}	
+		
+		if(nbDragonPlayer1 == 0)
+			winner = player2;
+		
+		if(nbDragonPlayer2 == 0)
+			winner = player1;
+		
+		return winner;
 	}
 }

@@ -58,6 +58,15 @@ public class Bushi {
 	}
 	
 	/**
+	 * Returns 	the Player who owns the Bushi
+	 * @return	the bushi's owner
+	 * @see		Player
+	 */
+	public Player getOwner() {
+		return this.owner;
+	}
+	
+	/**
 	 * Returns 	the movement points of the Bushi
 	 * @return	the bushi's movement points
 	 */

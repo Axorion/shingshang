@@ -17,7 +17,7 @@ public class ShingShang {
 		monBushi.moveToCell(board.getCell(3, 2));
 		board.displayBoard();*/
 		
-		board.cellSelected = board.getCell(7, 9);
+		//board.cellSelected = board.getCell(7, 9);
 		/*List<Cell> cellsWhereBushiSelectedCanMove = board.getCellsWhereBushiSelectedCanMove();
 		for(Cell cell : cellsWhereBushiSelectedCanMove)
 		{
@@ -25,11 +25,13 @@ public class ShingShang {
 			System.out.println("MAIN : x : " + coordinatesOfCell[0] + " y : " + coordinatesOfCell[1]);
 		}*/
 		
-		List<Cell> cellsWhereBushiSelectedCanMove = board.getCellsWhereBushiSelectedCanMove();
+		/*List<Cell> cellsWhereBushiSelectedCanMove = board.getCellsWhereBushiSelectedCanMove();
 		for(Cell cell : cellsWhereBushiSelectedCanMove)
 		{
 			int[] coordinatesOfCell = board.getCoordinatesOfCell(cell);
 			System.out.println("MAIN : x : " + coordinatesOfCell[0] + " y : " + coordinatesOfCell[1]);
-		}
+		}*/
+		Player winner = board.checkVictory();
+		System.out.println(winner.getPseudonym());
 	}
 }
