@@ -1,6 +1,9 @@
-package shingshang.abstraction;
+package application;
 
 import java.util.List;
+
+import shingshang.abstraction.Board;
+import shingshang.abstraction.Player;
 
 /** Main used to show the development of the project
  * @author Tanguy Mossion
