@@ -1,4 +1,4 @@
-package shingshang.abstraction;
+package abstraction;
 
 /** Represents a bushi.
  * @author Tanguy Mossion
@@ -13,6 +13,7 @@ public class Bushi {
 	final private Player owner;
 	final private int movementPoint;
 	private Cell position;
+	private boolean hasEaten;
 	
 	// METHODS
 	
@@ -21,6 +22,7 @@ public class Bushi {
 	 * @param 	bushiType	the bushi's type
 	 * @param  	owner		the bushi's owner
 	 * @param  	position	the bushi's position
+	 * @param  	hasEaten	indicates if the bushi has eaten another bushi in the round
 	 * @see		BushiType
 	 * @see		Player
 	 * @see		Cell
@@ -46,6 +48,8 @@ public class Bushi {
 		
 		this.position = position;
 		position.setBushi(this);
+
+		this.hasEaten = false;
 	}
 
 	/**
@@ -93,7 +97,23 @@ public class Bushi {
 	}
 	
 	/**
-	 * Move the bushi to the Cell
+	 * Returns a boolean indicating if the bushi has eaten another bushi in the round
+	 * @return a boolean indicating if the bushi has eaten another bushi in the round
+	 */
+	public boolean hasEaten() {
+		return this.hasEaten;
+	}
+	
+	/**
+	 * Sets a boolean to know if the bushi has eaten another bushi in the round
+	 * @param 	hasEaten the boolean to know if the bushi has already eaten another bushi in the round
+	 */
+	public void setHasEaten(boolean hasEaten) {
+		this.hasEaten = hasEaten;
+	}
+	
+	/**
+	 * Moves the bushi to the Cell
 	 * @param 	position the object Cell where to move the bushi
 	 * @see		Cell
 	 */
@@ -108,8 +128,7 @@ public class Bushi {
 	 * @param 	otherBushi	the other bushi to compare with the bushi
 	 * @return 	a boolean 	indicating if the bushi is bigger or equal than the other bushi
 	 */
-	public boolean isBiggerOrEqualThan(Bushi otherBushi)
-	{
+	public boolean isBiggerOrEqualThan(Bushi otherBushi) {
 		return(this.bushiType.ordinal() >= otherBushi.bushiType.ordinal());
 	}
 }

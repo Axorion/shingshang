@@ -1,4 +1,4 @@
-package shingshang.abstraction;
+package abstraction;
 
 /** Represents a bushi type.
  * @author Tanguy Mossion

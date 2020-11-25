@@ -1,4 +1,4 @@
-package shingshang.abstraction;
+package abstraction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -17,21 +17,12 @@ public class Board {
 	private final static int Y = 1;
 	
 	// INSTANCE VARIABLES (ATTRIBUTES)
-
 	/**
 	 * The board of the game, it's a two dimension tab of Cell
 	 */
-	static public Cell board[][];
-	private Player player1;
-	private Player player2;
-	
-	/**
-	 * The cell selected by the player
-	 */
-	public Cell cellSelected;
+	public Cell board[][];
 	
 	// METHODS
-	
 	/**
 	 * Constructor initializing the Board with the beginning placement of the bushis
 	 */
@@ -40,7 +31,7 @@ public class Board {
 	}
 
 	/**
-	 * Reset the board placing the bushis to their beginning placement
+	 * Resets the board placing the bushis to their beginning placement
 	 */
 	public void reset() {
 		resetBoard();
@@ -50,7 +41,7 @@ public class Board {
 	/**
 	 * Part of the constructor initializing the board with empty cells 
 	 */
-	public void resetBoard() {
+	private void resetBoard() {
 		board = new Cell[NB_COL][NB_LIN];
 		for (int col = 0 ; col < NB_LIN ; col++ ) {
 			for (int lin = 0 ; lin < NB_COL ; lin++) {
@@ -71,45 +62,33 @@ public class Board {
 	/**
 	 * Part of the constructor initializing the bushis on the board
 	 */
-	public void resetBushis() {
-		this.player1 = new Player("Player 1");
-		this.player2 = new Player("Player 2");
+	private void resetBushis() {
+		new Bushi(BushiType.DRAGON, Game.player1, board[1][0]);
+		new Bushi(BushiType.DRAGON, Game.player1, board[8][0]);
+		new Bushi(BushiType.DRAGON, Game.player2, board[1][9]);
+		new Bushi(BushiType.DRAGON, Game.player2, board[8][9]);
 		
-		/// Dragons
-		// P1
-		//Bushi bushiP1Dragon1 = new Bushi(BushiType.DRAGON, player1, board[1][0]);
-		//Bushi bushiP1Dragon2 = new Bushi(BushiType.DRAGON, player1, board[8][0]);
-		// P2
-		Bushi bushiP2Dragon1 = new Bushi(BushiType.DRAGON, player2, board[1][9]);
-		Bushi bushiP2Dragon2 = new Bushi(BushiType.DRAGON, player2, board[8][9]);
+		new Bushi(BushiType.LION, Game.player1, board[2][0]);
+		new Bushi(BushiType.LION, Game.player1, board[7][0]);
+		new Bushi(BushiType.LION, Game.player1, board[1][1]);
+		new Bushi(BushiType.LION, Game.player1, board[8][1]);
+		new Bushi(BushiType.LION, Game.player2, board[2][9]);
+		new Bushi(BushiType.LION, Game.player2, board[7][9]);
+		new Bushi(BushiType.LION, Game.player2, board[1][8]);
+		new Bushi(BushiType.LION, Game.player2, board[8][8]);
 		
-		/// Lions
-		// P1
-		Bushi bushiP1Lion1 = new Bushi(BushiType.LION, player1, board[2][0]);
-		Bushi bushiP1Lion2 = new Bushi(BushiType.LION, player1, board[7][0]);
-		Bushi bushiP1Lion3 = new Bushi(BushiType.LION, player1, board[1][1]);
-		Bushi bushiP1Lion4 = new Bushi(BushiType.LION, player1, board[8][1]);
-		// P2
-		Bushi bushiP2Lion1 = new Bushi(BushiType.LION, player2, board[2][9]);
-		Bushi bushiP2Lion2 = new Bushi(BushiType.LION, player2, board[7][9]);
-		Bushi bushiP2Lion3 = new Bushi(BushiType.LION, player2, board[1][8]);
-		Bushi bushiP2Lion4 = new Bushi(BushiType.LION, player2, board[8][8]);
-		
-		/// Monkeys
-		// P1
-		Bushi bushiP1Monkey1 = new Bushi(BushiType.MONKEY, player1, board[3][0]);
-		Bushi bushiP1Monkey2 = new Bushi(BushiType.MONKEY, player1, board[6][0]);
-		Bushi bushiP1Monkey3 = new Bushi(BushiType.MONKEY, player1, board[2][1]);
-		Bushi bushiP1Monkey4 = new Bushi(BushiType.MONKEY, player1, board[7][1]);
-		Bushi bushiP1Monkey5 = new Bushi(BushiType.MONKEY, player1, board[1][2]);
-		Bushi bushiP1Monkey6 = new Bushi(BushiType.MONKEY, player1, board[8][2]);
-		// P2
-		Bushi bushiP2Monkey1 = new Bushi(BushiType.MONKEY, player2, board[3][9]);
-		Bushi bushiP2Monkey2 = new Bushi(BushiType.MONKEY, player2, board[6][9]);
-		Bushi bushiP2Monkey3 = new Bushi(BushiType.MONKEY, player2, board[2][8]);
-		Bushi bushiP2Monkey4 = new Bushi(BushiType.MONKEY, player2, board[7][8]);
-		Bushi bushiP2Monkey5 = new Bushi(BushiType.MONKEY, player2, board[1][7]);
-		Bushi bushiP2Monkey6 = new Bushi(BushiType.MONKEY, player2, board[8][7]);
+		new Bushi(BushiType.MONKEY, Game.player1, board[3][0]);
+		new Bushi(BushiType.MONKEY, Game.player1, board[6][0]);
+		new Bushi(BushiType.MONKEY, Game.player1, board[2][1]);
+		new Bushi(BushiType.MONKEY, Game.player1, board[7][1]);
+		new Bushi(BushiType.MONKEY, Game.player1, board[1][2]);
+		new Bushi(BushiType.MONKEY, Game.player1, board[8][2]);
+		new Bushi(BushiType.MONKEY, Game.player2, board[3][9]);
+		new Bushi(BushiType.MONKEY, Game.player2, board[6][9]);
+		new Bushi(BushiType.MONKEY, Game.player2, board[2][8]);
+		new Bushi(BushiType.MONKEY, Game.player2, board[7][8]);
+		new Bushi(BushiType.MONKEY, Game.player2, board[1][7]);
+		new Bushi(BushiType.MONKEY, Game.player2, board[8][7]);
 	}
 	
 	/**
@@ -143,80 +122,31 @@ public class Board {
 	}
 	
 	/**
-	 * Display the board in the console
-	 */
-	public void displayBoard() {
-		for (int lin = 0 ; lin < NB_LIN ; lin++ ) {
-			for (int col = 0 ; col < NB_COL ; col++) {
-				displayCell(board[col][lin]);
-				System.out.print("  ");
-			}
-			System.out.print("\n\n");
-		}
-	}
-	
-	/**
-	 * Display a cell in the console. There are different representations depending on the cell state.
-	 * @param  cell	the cell to display on console
-	 * @see    Cell
-	 */
-	public void displayCell(Cell cell) {
-		if(cell.isPortal())
-		{
-			System.out.print("P");
-		}
-		else if(!cell.isValid())
-		{
-			System.out.print("⬛");
-		}
-		else if(cell.isEmpty())
-		{
-			System.out.print("□");
-		}
-		else if(cell.getBushi().getBushiType() == BushiType.DRAGON)
-		{
-			System.out.print("D");
-		}
-		else if(cell.getBushi().getBushiType() == BushiType.LION)
-		{
-			System.out.print("L");
-		}
-		else if(cell.getBushi().getBushiType() == BushiType.MONKEY)
-		{
-			System.out.print("M");
-		}
-		else // Unrecognized
-		{
-			System.out.print("?");
-		}
-	}
-	
-	/**
-	 * Return a list of cells where the bushi selected can move
+	 * Returns a list of cells where the bushi selected can move
 	 * @return	the cells where the bushi selected can move
 	 * @see    	Cell
 	 */
-	public List<Cell> getCellsWhereBushiSelectedCanMove()
-	{
+	public List<Cell> getCellsWhereBushiSelectedCanMove() {
 		List<Cell> cellsWhereBushiSelectedCanMove = new ArrayList<Cell>();
 		cellsWhereBushiSelectedCanMove.addAll(getCellsWhichBushiSelectedCanReach());
+		this.removeCellsBlockedByOtherBushi(cellsWhereBushiSelectedCanMove);
 		cellsWhereBushiSelectedCanMove.addAll(getCellsWhereBushiSelectedCanJump());
 		this.removeCellsInvalidInList(cellsWhereBushiSelectedCanMove);
 		this.removeCellsOccupiedInList(cellsWhereBushiSelectedCanMove);
-		this.removeCellsPortalInList(cellsWhereBushiSelectedCanMove);
+		if(Game.cellSelected.getBushi().getBushiType() != BushiType.DRAGON)
+			this.removeCellsPortalInList(cellsWhereBushiSelectedCanMove);
 		return cellsWhereBushiSelectedCanMove;
 	}
 	
 	/**
-	 * Return a list of cells which the bushi selected can reach
+	 * Returns a list of cells which the bushi selected can reach
 	 * @return	the cells which the bushi selected can reach
 	 * @see		Cell
 	 */
-	public List<Cell> getCellsWhichBushiSelectedCanReach()
-	{
+	private List<Cell> getCellsWhichBushiSelectedCanReach() {
 		List<Cell> cellsWhichBushiSelectedCanReach = new ArrayList<Cell>();
-		int[] coordinatesOfCellSelected = getCoordinatesOfCell(this.cellSelected);
-		Bushi bushiSelected = this.cellSelected.getBushi();
+		int[] coordinatesOfCellSelected = getCoordinatesOfCell(Game.cellSelected);
+		Bushi bushiSelected = Game.cellSelected.getBushi();
 		int movementPoint = bushiSelected.getMovementPoint();
 		for(int i = coordinatesOfCellSelected[X] - movementPoint ; 
 				i <= coordinatesOfCellSelected[X] + movementPoint ; i++)
@@ -258,12 +188,11 @@ public class Board {
 	}
 	
 	/**
-	 * Return a list of cells where the bushi selected can jump
+	 * Returns a list of cells where the bushi selected can jump
 	 * @return	the cells where the bushi selected can jump
 	 * @see   	Cell
 	 */
-	public List<Cell> getCellsWhereBushiSelectedCanJump()
-	{
+	public List<Cell> getCellsWhereBushiSelectedCanJump() {
 		List<Cell> cellsWhereBushiSelectedCanJump = new ArrayList<Cell>();
 		
 		List<Cell> cellsCloseToBushiSelected = new ArrayList<Cell>();
@@ -298,14 +227,13 @@ public class Board {
 	}
 	
 	/**
-	 * Return a list of cells close to the bushi selected
+	 * Returns a list of cells close to the bushi selected
 	 * @return	the cells close to the bushi selected
 	 * @see   	Cell
 	 */
-	public List<Cell> getCellsCloseToBushiSelected()
-	{
+	private List<Cell> getCellsCloseToBushiSelected() {
 		List<Cell> cellsCloseToBushiSelected = new ArrayList<Cell>();
-		int[] coordinatesOfCellSelected = getCoordinatesOfCell(this.cellSelected);
+		int[] coordinatesOfCellSelected = getCoordinatesOfCell(Game.cellSelected);
 		 
 		for(int i = coordinatesOfCellSelected[X] - 1 ; i <= coordinatesOfCellSelected[X] + 1 ; i++)
 		{
@@ -328,21 +256,20 @@ public class Board {
 	}
 	
 	/**
-	 * Return a boolean indicating if the bushi selected can jump over the other bushi
+	 * Returns a boolean indicating if the bushi selected can jump over the other bushi
 	 * @param	otherBushi	the other bushi over which the bushi selected jumps
 	 * @return	a boolean 	indicating if the bushi selected can jump over the other bushi
 	 * @see    	Bushi
 	 */
-	public boolean checkIfBushiSelectedCanJumpOver(Bushi otherBushi)
-	{
+	private boolean checkIfBushiSelectedCanJumpOver(Bushi otherBushi) {
 		boolean bushiSelectedCanMoveOverOtherBushi = false;
-		boolean bushiIsBiggerOrEqualThanBushi = false;
+		boolean bushiIsBiggerOrEqualThanOtherBushi = false;
 		boolean bushiSelectedWillLandOnTheBoard = false;
 		
-		if(this.cellSelected.getBushi() != null)
+		if(Game.cellSelected.getBushi() != null)
 		{
-			Bushi bushiSelected = this.cellSelected.getBushi();
-			bushiIsBiggerOrEqualThanBushi = bushiSelected.isBiggerOrEqualThan(otherBushi);
+			Bushi bushiSelected = Game.cellSelected.getBushi();
+			bushiIsBiggerOrEqualThanOtherBushi = bushiSelected.isBiggerOrEqualThan(otherBushi);
 			
 			int[] coordinatesOfBushiSelectedAfterJumpingOverOtherBushi = getCoordinatesOfBushiSelectedAfterJumpingOver(otherBushi);
 			
@@ -352,7 +279,7 @@ public class Board {
 					&& coordinatesOfBushiSelectedAfterJumpingOverOtherBushi[Y] < NB_LIN;
 		}
 		
-		bushiSelectedCanMoveOverOtherBushi = bushiIsBiggerOrEqualThanBushi && bushiSelectedWillLandOnTheBoard;
+		bushiSelectedCanMoveOverOtherBushi = bushiIsBiggerOrEqualThanOtherBushi && bushiSelectedWillLandOnTheBoard;
 		return bushiSelectedCanMoveOverOtherBushi;
 	}
 	
@@ -362,9 +289,8 @@ public class Board {
 	 * @return	int[]		the coordinates of the cell
 	 * @see    	Bushi
 	 */
-	public int[] getCoordinatesOfBushiSelectedAfterJumpingOver(Bushi otherBushi)
-	{
-		Bushi bushiSelected = this.cellSelected.getBushi();
+	private int[] getCoordinatesOfBushiSelectedAfterJumpingOver(Bushi otherBushi) {
+		Bushi bushiSelected = Game.cellSelected.getBushi();
 		
 		int[] coordinatesOfBushiSelected = this.getCoordinatesOfCell(bushiSelected.getPosition());
 		int[] coordinatesOfOtherBushi = this.getCoordinatesOfCell(otherBushi.getPosition());
@@ -390,13 +316,12 @@ public class Board {
 	}
 	
 	/**
-	 * Remove the cells occupied from a list of cells
+	 * Removes the cells occupied from a list of cells
 	 * @param 	cells	a list of cell
 	 * @return	a list of cell where none is occupied
 	 * @see    	Cell
 	 */
-	public List<Cell> removeCellsOccupiedInList(List<Cell> cells)
-	{
+	private List<Cell> removeCellsOccupiedInList(List<Cell> cells) {
 		ListIterator<Cell> itCell = cells.listIterator();
 		while(itCell.hasNext())
 		{
@@ -407,13 +332,12 @@ public class Board {
 	}
 	
 	/**
-	 * Remove the cells which are portals from a list of cells
+	 * Removes the cells which are portals from a list of cells
 	 * @param 	cells	a list of cell
 	 * @return	a list of cell where none is a portal
 	 * @see    	Cell
 	 */
-	public List<Cell> removeCellsPortalInList(List<Cell> cells)
-	{
+	private List<Cell> removeCellsPortalInList(List<Cell> cells) {
 		ListIterator<Cell> itCell = cells.listIterator();
 		while(itCell.hasNext())
 		{
@@ -424,13 +348,12 @@ public class Board {
 	}
 	
 	/**
-	 * Remove the invalid cells from a list of cells
+	 * Removes the invalid cells from a list of cells
 	 * @param 	cells	a list of cell
 	 * @return	a list of cell where none is invalid
 	 * @see    	Cell
 	 */
-	public List<Cell> removeCellsInvalidInList(List<Cell> cells)
-	{
+	private List<Cell> removeCellsInvalidInList(List<Cell> cells) {
 		ListIterator<Cell> itCell = cells.listIterator();
 		while(itCell.hasNext())
 		{
@@ -441,12 +364,100 @@ public class Board {
 	}
 	
 	/**
+	 * Returns the cell between the two cells passed in parameters
+	 * @param 	Cell	the first cell
+	 * @param 	Cell	the second cell
+	 * @return	the cell between the two cells passed in parameters
+	 * @see    	Cell
+	 */
+	private Cell getCellBetweenTwoCells(Cell firstCell, Cell secondCell) {
+		int[] coordinatesOfCellBetweenCellSelectedAndOtherCell = new int[2];
+		
+		int[] coordinatesOfFirstCell = getCoordinatesOfCell(firstCell);
+		int[] coordinatesOfSecondCell = getCoordinatesOfCell(secondCell);	
+		
+		if(coordinatesOfSecondCell[X] < coordinatesOfFirstCell[X] && coordinatesOfFirstCell[X] - 2 == coordinatesOfSecondCell[X])
+		{
+			coordinatesOfCellBetweenCellSelectedAndOtherCell[X] = coordinatesOfFirstCell[X]-1;
+		}
+		else if (coordinatesOfSecondCell[X] > coordinatesOfFirstCell[X] && coordinatesOfFirstCell[X] + 2 == coordinatesOfSecondCell[X])
+		{
+			coordinatesOfCellBetweenCellSelectedAndOtherCell[X] = coordinatesOfFirstCell[X]+1;
+		}
+		else
+			coordinatesOfCellBetweenCellSelectedAndOtherCell[X] = coordinatesOfFirstCell[X];
+		
+		if(coordinatesOfSecondCell[Y] < coordinatesOfFirstCell[Y] && coordinatesOfFirstCell[Y] - 2 == coordinatesOfSecondCell[Y])
+		{
+			coordinatesOfCellBetweenCellSelectedAndOtherCell[Y] = coordinatesOfFirstCell[Y]-1;
+		}
+		else if (coordinatesOfSecondCell[Y] > coordinatesOfFirstCell[Y] && coordinatesOfFirstCell[Y] + 2 == coordinatesOfSecondCell[Y])
+		{
+			coordinatesOfCellBetweenCellSelectedAndOtherCell[Y] = coordinatesOfFirstCell[Y]+1;
+		}
+		else
+			coordinatesOfCellBetweenCellSelectedAndOtherCell[Y] = coordinatesOfFirstCell[Y];
+		
+		if(!(coordinatesOfCellBetweenCellSelectedAndOtherCell[X] == coordinatesOfFirstCell[X] && 
+				coordinatesOfCellBetweenCellSelectedAndOtherCell[Y] == coordinatesOfFirstCell[Y]))
+		{
+			return getCell(coordinatesOfCellBetweenCellSelectedAndOtherCell[X], coordinatesOfCellBetweenCellSelectedAndOtherCell[Y]);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	/**
+	 * Removes the  cells blocked by other bushi (there is a bushi between the bushi selected and the cell he can reach)
+	 * @param 	cells	a list of cell
+	 * @return	a list of cell blocked by other bushi
+	 * @see    	Cell
+	 */
+	private List<Cell> removeCellsBlockedByOtherBushi(List<Cell> cells) {
+		ListIterator<Cell> itCell = cells.listIterator();
+		while(itCell.hasNext())
+		{
+			Cell currentCell = itCell.next();
+			
+			Cell cellBetweenCurrentCellAndCellSelected = getCellBetweenTwoCells(Game.cellSelected, currentCell);
+			if(cellBetweenCurrentCellAndCellSelected != null)
+			{
+				if(cellBetweenCurrentCellAndCellSelected.getBushi() != null)
+					itCell.remove();
+			}
+		}
+		return cells;
+	}
+	
+	/**
+	 * Returns the bushi which have been jumped over by the other bushi
+	 * @param	otherBushi						the other bushi which have jumped over the bushi returned by the function
+	 * @param	cellWhereOtherBushiWillJump 	the cell where the other bushi will jump after jumping over
+	 * @return	cellWhereOtherBushiWillJump 	the cell where the other bushi will jump after jumping over
+	 * @see    	Bushi
+	 * @see    	Cell
+	 */
+	public Bushi getBushiWhichHaveBeenJumpedOverByOtherBushi(Bushi otherBushi, Cell cellWhereOtherBushiWillJump) {
+		Bushi bushiWhichHaveBeenJumpedOver = null;
+		
+		Cell cellOfOtherBushi = otherBushi.getPosition();
+		
+		Cell cellOfBushiWhichHaveBeenJumpedOver = getCellBetweenTwoCells(cellOfOtherBushi, cellWhereOtherBushiWillJump);
+		
+		if(cellOfBushiWhichHaveBeenJumpedOver != null)
+			bushiWhichHaveBeenJumpedOver = cellOfBushiWhichHaveBeenJumpedOver.getBushi();
+		
+		return bushiWhichHaveBeenJumpedOver;
+	}
+	
+	/**
 	 * If there is one of the win condition, returns the player who wins
 	 * @return	the winner with a Player object
 	 * @see    	Player
 	 */
-	public Player checkVictory()
-	{
+	public Player checkVictory() {
 		Player winner;
 		
 		winner = checkIfOneDragonIsOnPortal();
@@ -461,8 +472,7 @@ public class Board {
 	 * @return	the winner with a Player object
 	 * @see    	Player
 	 */
-	public Player checkIfOneDragonIsOnPortal()
-	{
+	private Player checkIfOneDragonIsOnPortal() {
 		Player winner = null;
 		for (int col = 0 ; col < NB_LIN ; col++ ) {
 			for (int lin = 0 ; lin < NB_COL ; lin++) {
@@ -488,8 +498,7 @@ public class Board {
 	 * @return	the winner with a Player object
 	 * @see    	Player
 	 */
-	public Player checkIfOnePlayerHasNoDragon()
-	{
+	private Player checkIfOnePlayerHasNoDragon() {
 		Player winner = null;
 		
 		int nbDragonPlayer1 = 0;
@@ -503,11 +512,11 @@ public class Board {
 					Bushi currentBushi = currentCell.getBushi();
 					if(currentBushi.getBushiType() == BushiType.DRAGON)
 					{
-						if(currentBushi.getOwner() == player1)
+						if(currentBushi.getOwner() == Game.player1)
 						{
 							nbDragonPlayer1++;
 						}
-						else if(currentBushi.getOwner() == player2)
+						else if(currentBushi.getOwner() == Game.player2)
 						{
 							nbDragonPlayer2++;
 						}
@@ -517,11 +526,29 @@ public class Board {
 		}	
 		
 		if(nbDragonPlayer1 == 0)
-			winner = player2;
+			winner = Game.player2;
 		
 		if(nbDragonPlayer2 == 0)
-			winner = player1;
+			winner = Game.player1;
 		
 		return winner;
 	}
+	
+	/**
+	 * Returns a boolean indicating if the bushi selected is owned by the player in parameter
+	 * @param	player		the player which we want to know if he is the owner of bushi selected
+	 * @return	a boolean 	indicating if the bushi selected is owned by player
+	 * @see    	Player
+	 */
+	public boolean checkIfPlayerOwnsBushiSelected(Player player) {
+		if(Game.cellSelected.getBushi() != null)
+		{
+			return(player == Game.cellSelected.getBushi().getOwner());
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 }

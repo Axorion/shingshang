@@ -1,4 +1,4 @@
-package shingshang.abstraction;
+package abstraction;
 
 /** Represents a cell.
  * @author Tanguy Mossion
@@ -20,8 +20,7 @@ public class Cell {
 	 * @param  isPortal indicates if the cell is a portal
 	 * @param  isValid	indicates if the cell is valid
 	 */
-	public Cell(Boolean isPortal, Boolean isValid)
-	{
+	public Cell(Boolean isPortal, Boolean isValid) {
 		this.bushi = null;
 		this.isPortal = isPortal;
 		this.isValid = isValid;
@@ -32,18 +31,16 @@ public class Cell {
 	 * @return	the bushi on the cell
 	 * @see		Bushi
 	 */
-	public Bushi getBushi()
-	{
+	public Bushi getBushi() {
 		return this.bushi;
 	}
 	
 	/**
-	 * Set a Bushi object on the cell
+	 * Sets a Bushi object on the cell
 	 * @param 	bushi	the object Bushi to set to the bushi property
 	 * @see		Bushi
 	 */
-	public void setBushi(Bushi bushi)
-	{
+	public void setBushi(Bushi bushi) {
 		this.bushi = bushi;
 	}
  
@@ -51,8 +48,7 @@ public class Cell {
 	 * Remove the Bushi object from the cell
 	 * @see	Bushi
 	 */
-	public void removeBushi()
-	{
+	public void removeBushi() {
 		this.bushi = null;
 	}
 	
@@ -60,8 +56,7 @@ public class Cell {
 	 * Returns a boolean indicating if the cell is a portal
 	 * @return a boolean indicating if the cell is a portal
 	 */
-	public boolean isPortal()
-	{
+	public boolean isPortal() {
 		return this.isPortal;
 	}
 	
@@ -69,8 +64,7 @@ public class Cell {
 	 * Returns a boolean indicating if the cell is valid
 	 * @return a boolean indicating if the cell is valid
 	 */
-	public boolean isValid()
-	{
+	public boolean isValid() {
 		return this.isValid;
 	}
 
@@ -78,8 +72,7 @@ public class Cell {
 	 * Returns a boolean indicating if the cell is empty
 	 * @return a boolean indicating if the cell is empty
 	 */
-	public boolean isEmpty()
-	{
+	public boolean isEmpty() {
 		return (this.bushi == null);
 	}
 }

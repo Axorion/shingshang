@@ -1,40 +1,30 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import shingshang.abstraction.Board;
-import shingshang.abstraction.Player;
+import abstraction.Game;
+import abstraction.Player;
+import presentation.MainConsole;
 
 /** Main used to show the development of the project
  * @author Tanguy Mossion
  */
 
 public class ShingShang {
-
 	public static void main(String[] args) {
-		Board board = new Board();
-		board.displayBoard();
-
-		/*Bushi monBushi = board.getCell(3, 0).getBushi();
-		System.out.println(monBushi.getBushiType());
-		monBushi.moveToCell(board.getCell(3, 2));
-		board.displayBoard();*/
 		
-		//board.cellSelected = board.getCell(7, 9);
-		/*List<Cell> cellsWhereBushiSelectedCanMove = board.getCellsWhereBushiSelectedCanMove();
-		for(Cell cell : cellsWhereBushiSelectedCanMove)
-		{
-			int[] coordinatesOfCell = board.getCoordinatesOfCell(cell);
-			System.out.println("MAIN : x : " + coordinatesOfCell[0] + " y : " + coordinatesOfCell[1]);
-		}*/
+		Player player1 = new Player("Player1");
+		Player player2 = new Player("Player2");
 		
-		/*List<Cell> cellsWhereBushiSelectedCanMove = board.getCellsWhereBushiSelectedCanMove();
-		for(Cell cell : cellsWhereBushiSelectedCanMove)
-		{
-			int[] coordinatesOfCell = board.getCoordinatesOfCell(cell);
-			System.out.println("MAIN : x : " + coordinatesOfCell[0] + " y : " + coordinatesOfCell[1]);
-		}*/
-		Player winner = board.checkVictory();
-		System.out.println(winner.getPseudonym());
+		List<Player> players = new ArrayList<Player>();
+		players.add(player1);
+		players.add(player2);
+		
+		MainConsole.askPseudonyms(players);
+		
+		Game game = new Game(true, player1, player2);
+		game.play();
+		
 	}
 }
